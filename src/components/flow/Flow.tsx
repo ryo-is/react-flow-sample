@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import ReactFlow, {
   Node,
   addEdge,
@@ -8,13 +8,17 @@ import ReactFlow, {
   useEdgesState,
   Position,
   updateEdge,
-  Background,
+  useReactFlow,
 } from 'reactflow';
+import { MinusIcon, PlusIcon } from '@heroicons/react/solid';
 
 import { PopupNode } from './PopupNode';
 import { LinkNode } from './LinkNode';
 
 import 'reactflow/dist/style.css';
+import { FlowInfo } from './FlowInfo';
+
+const panOnDrag = [1, 2];
 
 const initialNodes: Node[] = [
   {
@@ -28,7 +32,7 @@ const initialNodes: Node[] = [
         { id: 'popup-1-button-3', label: '閉じる', type: 'close' },
       ],
     },
-    position: { x: 200, y: 200 },
+    position: { x: 100, y: 200 },
     sourcePosition: Position.Right,
   },
   {
@@ -38,7 +42,7 @@ const initialNodes: Node[] = [
       label: 'pupup_2',
       buttons: [{ id: 'popup-2-button-1', label: '閉じる', type: 'close' }],
     },
-    position: { x: 550, y: 100 },
+    position: { x: 500, y: 100 },
     targetPosition: Position.Left,
   },
   {
@@ -48,14 +52,14 @@ const initialNodes: Node[] = [
       label: 'pupup_3',
       buttons: [{ id: 'popup-3-button-1', label: '閉じる', type: 'close' }],
     },
-    position: { x: 900, y: 200 },
+    position: { x: 850, y: 200 },
     targetPosition: Position.Left,
   },
   {
     id: 'link-4',
     type: 'link',
     data: { label: 'https://example.com' },
-    position: { x: 550, y: 400 },
+    position: { x: 500, y: 500 },
     targetPosition: Position.Left,
     sourcePosition: Position.Right,
   },
@@ -88,6 +92,10 @@ export const Flow = () => {
   const edgeUpdateSuccessful = useRef(true);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { zoomIn, zoomOut } = useReactFlow();
 
   const onConnect = useCallback(
     (params: Edge | Connection) =>
@@ -150,6 +158,7 @@ export const Flow = () => {
       targetPosition: Position.Left,
     });
     setNodes(n);
+    setIsMenuOpen(false);
   };
 
   const addLinkNode = () => {
@@ -163,40 +172,76 @@ export const Flow = () => {
       sourcePosition: Position.Right,
     });
     setNodes(n);
+    setIsMenuOpen(false);
   };
 
   return (
-    <>
-      <div className="flex gap-x-2">
-        <button
-          className="py-2 px-4 rounded-sm bg-blue-600 w-fit gap-x-1 mt-2 text-zinc-50 cursor-pointer"
-          onClick={() => addPopupNode()}
-          type="button"
+    <div className="border-2 w-2/3 p-4 relative">
+      <div className="h-[840px]">
+        <div className="absolute z-50">
+          <button
+            className="py-1 px-3 rounded-sm bg-sky-600 w-fit gap-x-1 text-zinc-50 cursor-pointer flex items-center"
+            onClick={() => setIsMenuOpen((p) => !p)}
+            type="button"
+          >
+            <div className="px-3">作る</div>
+            <PlusIcon className="w-5 h-5" />
+          </button>
+          {isMenuOpen && (
+            <div className="absolute w-[240px] bg-zinc-100 shadow-lg z-50 text-zinc-800 border-zinc-300 border">
+              <button
+                className="p-2 border-b border-zinc-300 w-full text-left hover:bg-sky-100"
+                onClick={() => addPopupNode()}
+                type="button"
+              >
+                ポップアップを追加
+              </button>
+              <button
+                className="p-2 border-b border-zinc-300 w-full text-left hover:bg-sky-100"
+                onClick={() => addLinkNode()}
+                type="button"
+              >
+                画面遷移を追加
+              </button>
+            </div>
+          )}
+        </div>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          nodeTypes={nodeTypes}
+          onEdgeUpdate={onEdgeUpdate}
+          onEdgeUpdateStart={onEdgeUpdateStart}
+          onEdgeUpdateEnd={onEdgeUpdateEnd}
+          panOnScroll
+          selectionOnDrag
+          panOnDrag={panOnDrag}
         >
-          ポップアップを追加する
-        </button>
-        <button
-          className="py-2 px-4 rounded-sm bg-green-700 w-fit gap-x-1 mt-2 text-zinc-50 cursor-pointer"
-          onClick={() => addLinkNode()}
-          type="button"
-        >
-          画面遷移を追加する
-        </button>
+          {/* <Controls /> */}
+          <div className="absolute right-0 z-50 flex gap-x-2">
+            <button
+              className="flex items-center"
+              type="button"
+              onClick={() => zoomIn({ duration: 500 })}
+            >
+              <PlusIcon className="w-4 h-4" />
+              <div className="px-2 text-sm">拡大する</div>
+            </button>
+            <button
+              className="flex items-center"
+              type="button"
+              onClick={() => zoomOut({ duration: 500 })}
+            >
+              <MinusIcon className="w-4 h-4" />
+              <div className="px-2 text-sm">縮小する</div>
+            </button>
+          </div>
+        </ReactFlow>
       </div>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        nodeTypes={nodeTypes}
-        onEdgeUpdate={onEdgeUpdate}
-        onEdgeUpdateStart={onEdgeUpdateStart}
-        onEdgeUpdateEnd={onEdgeUpdateEnd}
-        // fitView
-      >
-        <Background />
-      </ReactFlow>
-    </>
+      <FlowInfo nodes={nodes} />
+    </div>
   );
 };
