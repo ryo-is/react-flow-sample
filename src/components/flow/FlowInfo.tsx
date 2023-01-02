@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import { ReactFlowState, useStore, Node } from 'reactflow';
+import { DataType } from './PopupNode';
 
 const transformSelector = (state: ReactFlowState) => state.transform;
 
 interface FlowInfoProps {
-  nodes: Node[];
+  nodes: Node<DataType>[];
 }
 
 export const FlowInfo: FC<FlowInfoProps> = ({ nodes }) => {
@@ -20,8 +21,10 @@ export const FlowInfo: FC<FlowInfoProps> = ({ nodes }) => {
       <div className="mt-2">Nodes</div>
       {nodes.map((node) => (
         <div key={node.id}>
-          Node {node.id} - x: {node.position.x.toFixed(2)}, y:{' '}
-          {node.position.y.toFixed(2)}
+          <div>
+            Node {node.id} - x: {node.position.x.toFixed(2)}, y:{' '}
+            {node.position.y.toFixed(2)}
+          </div>
         </div>
       ))}
     </div>

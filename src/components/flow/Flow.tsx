@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import ReactFlow, {
   Node,
   addEdge,
@@ -12,7 +12,7 @@ import ReactFlow, {
 } from 'reactflow';
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid';
 
-import { PopupNode } from './PopupNode';
+import { PopupNode, DataType } from './PopupNode';
 import { LinkNode } from './LinkNode';
 
 import 'reactflow/dist/style.css';
@@ -20,7 +20,7 @@ import { FlowInfo } from './FlowInfo';
 
 const panOnDrag = [1, 2];
 
-const initialNodes: Node[] = [
+const initialNodes: Node<DataType>[] = [
   {
     id: 'popup-1',
     type: 'popup',
@@ -58,7 +58,7 @@ const initialNodes: Node[] = [
   {
     id: 'link-4',
     type: 'link',
-    data: { label: 'https://example.com' },
+    data: { label: 'https://example.com', buttons: [] },
     position: { x: 500, y: 500 },
     targetPosition: Position.Left,
     sourcePosition: Position.Right,
@@ -90,8 +90,8 @@ const nodeTypes = {
 
 export const Flow = () => {
   const edgeUpdateSuccessful = useRef(true);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState<DataType>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -135,20 +135,15 @@ export const Flow = () => {
   );
 
   const addPopupNode = () => {
-    const n = [...nodes];
-    n.push({
-      id: `popup-${n.length + 1}`,
+    const ns = [...nodes];
+    ns.push({
+      id: `popup-${ns.length + 1}`,
       type: 'popup',
       data: {
-        label: `popup_${n.length + 1}`,
+        label: `popup_${ns.length + 1}`,
         buttons: [
           {
-            id: `popup-${n.length + 1}-button-1`,
-            label: '詳しく知りたい',
-            type: 'link',
-          },
-          {
-            id: `popup-${n.length + 1}-button-2`,
+            id: `popup-${ns.length + 1}-button-1`,
             label: '閉じる',
             type: 'close',
           },
@@ -157,23 +152,28 @@ export const Flow = () => {
       position: { x: 500, y: 500 },
       targetPosition: Position.Left,
     });
-    setNodes(n);
+    setNodes(ns);
     setIsMenuOpen(false);
   };
 
   const addLinkNode = () => {
-    const n = [...nodes];
-    n.push({
-      id: `link-${n.length + 1}`,
+    const ns = [...nodes];
+    ns.push({
+      id: `link-${ns.length + 1}`,
       type: 'link',
-      data: { label: 'https://example.com' },
+      data: { label: 'https://example.com', buttons: [] },
       position: { x: 500, y: 500 },
       targetPosition: Position.Left,
       sourcePosition: Position.Right,
     });
-    setNodes(n);
+    setNodes(ns);
     setIsMenuOpen(false);
   };
+
+  useEffect(() => {
+    setNodes(initialNodes);
+    setEdges(initialEdges);
+  }, [setNodes, setEdges]);
 
   return (
     <div className="border-2 w-2/3 p-4 relative">
