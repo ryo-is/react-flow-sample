@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import {
   Handle,
   Node,
@@ -8,7 +8,9 @@ import {
   useStoreApi,
 } from 'reactflow';
 import { DotsVerticalIcon, PlusIcon } from '@heroicons/react/solid';
+import { PencilIcon, DuplicateIcon, TrashIcon } from '@heroicons/react/outline';
 import { v4 as uuidv4 } from 'uuid';
+import { PopupNodeButton } from './PopupNodeButton';
 
 export type DataType = {
   label: string;
@@ -23,6 +25,8 @@ const PopupNodeBase = ({
 }: NodeProps<DataType>) => {
   const { setNodes } = useReactFlow();
   const store = useStoreApi();
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const addButton = () => {
     const { nodeInternals } = store.getState();
@@ -62,31 +66,45 @@ const PopupNodeBase = ({
         <div className=" bg-zinc-700 text-white px-2 py-1 rounded-sm">
           ポップアップ
         </div>
-        <DotsVerticalIcon className="w-3 h-3 text-zinc-600 mr-1" />
+        <div className="relative">
+          <button type="button" onClick={() => setIsMenuOpen((p) => !p)}>
+            <DotsVerticalIcon className="w-3 h-3 text-zinc-600 mr-1" />
+          </button>
+          {isMenuOpen && (
+            <div className="absolute w-[120px] bg-zinc-100 shadow-lg z-50 text-zinc-800 border-zinc-300 border">
+              <button
+                className="p-2 w-full text-left hover:bg-sky-100 flex"
+                type="button"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <PencilIcon className="w-4 h-4 mr-2" />
+                編集
+              </button>
+              <button
+                className="p-2 w-full text-left hover:bg-sky-100 flex"
+                type="button"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <DuplicateIcon className="w-4 h-4 mr-2" />
+                コピー
+              </button>
+              <button
+                className="p-2 w-full text-left hover:bg-sky-100 flex text-red-500"
+                type="button"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <TrashIcon className="w-4 h-4 mr-2" />
+                削除
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="mt-1 ml-2">
         <div className="text-left mb-2 text-md">{data.label}</div>
         {data.buttons.map((b) => (
-          <div
-            className="rounded-l-sm border border-zinc-700 flex items-center gap-x-1 p-2 relative my-1 border-r-0"
-            key={`${b.id}`}
-          >
-            <div className="border-r border-zinc-500 pr-1">
-              {b.type === 'link' ? '●' : '×'}
-            </div>
-            <div className="flex-1 text-left pl-1">{b.label}</div>
-            <DotsVerticalIcon className="w-3 h-3 text-zinc-600" />
-            {b.type === 'link' && (
-              <Handle
-                type="source"
-                position={Position.Right}
-                isConnectable={isConnectable}
-                id={`${b.id}`}
-                className="w-2 h-2 right-[-5px]"
-              />
-            )}
-          </div>
+          <PopupNodeButton button={b} isConnectable={isConnectable} />
         ))}
 
         <button
