@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { Fragment, memo, useState } from 'react';
 import {
   Handle,
   Node,
@@ -104,7 +104,9 @@ const PopupNodeBase = ({
       <div className="mt-1 ml-2">
         <div className="text-left mb-2 text-md">{data.label}</div>
         {data.buttons.map((b) => (
-          <PopupNodeButton button={b} isConnectable={isConnectable} />
+          <Fragment key={`${b.id}`}>
+            <PopupNodeButton button={b} isConnectable={isConnectable} />
+          </Fragment>
         ))}
 
         <button

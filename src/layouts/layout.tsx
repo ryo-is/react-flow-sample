@@ -5,5 +5,5 @@ interface LayoutProps {
 }
 
 export const Layout: FC<LayoutProps> = ({ children }) => (
-  <div className="p-6 h-screen bg-zinc-100">{children}</div>
+  <div className="p-6 h-screen">{children}</div>
 );

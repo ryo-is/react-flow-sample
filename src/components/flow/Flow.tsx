@@ -9,6 +9,7 @@ import ReactFlow, {
   Position,
   updateEdge,
   useReactFlow,
+  MiniMap,
 } from 'reactflow';
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid';
 
@@ -239,6 +240,7 @@ export const Flow = () => {
               <div className="px-2 text-sm">縮小する</div>
             </button>
           </div>
+          <MiniMap />
         </ReactFlow>
       </div>
       <FlowInfo nodes={nodes} />

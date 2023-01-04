@@ -15,10 +15,7 @@ const PopupNodeButtonBase = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div
-      className="rounded-l-sm border border-zinc-700 flex items-center gap-x-1 p-2 relative my-1 border-r-0"
-      key={`${button.id}`}
-    >
+    <div className="rounded-l-sm border border-zinc-700 flex items-center gap-x-1 p-2 relative my-1 border-r-0">
       <div className="border-r border-zinc-500 pr-1">
         {button.type === 'link' ? '●' : '×'}
       </div>
