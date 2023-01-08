@@ -21,6 +21,7 @@ import { CustomEdge } from './CustomEdge';
 import { CustomConnectionline } from './CustomConnectionline';
 
 import 'reactflow/dist/style.css';
+import { useSetFlowStateValue } from '../../contexts/FlowStateContext';
 
 const panOnDrag = [1, 2];
 
@@ -67,6 +68,14 @@ const initialNodes: Node<DataType>[] = [
     targetPosition: Position.Left,
     sourcePosition: Position.Right,
   },
+  {
+    id: 'link-5',
+    type: 'link',
+    data: { label: 'https://example222.com', buttons: [] },
+    position: { x: 850, y: 600 },
+    targetPosition: Position.Left,
+    sourcePosition: Position.Right,
+  },
 ];
 
 const initialEdges: Edge[] = [
@@ -103,6 +112,7 @@ export const Flow = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { zoomIn, zoomOut } = useReactFlow();
+  const setFlowState = useSetFlowStateValue();
 
   const onConnect = useCallback(
     (params: Edge | Connection) =>
@@ -227,6 +237,9 @@ export const Flow = () => {
           selectionOnDrag
           panOnDrag={panOnDrag}
           connectionLineComponent={CustomConnectionline}
+          onConnectStart={() => {
+            setFlowState((prev) => ({ ...prev, isError: false }));
+          }}
         >
           {/* <Controls /> */}
           <div className="absolute right-0 z-50 flex gap-x-2">

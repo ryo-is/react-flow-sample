@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { ConnectionLineComponentProps, getSimpleBezierPath } from 'reactflow';
+import { useFlowStateValse } from '../../contexts/FlowStateContext';
 
 const CustomConnectionlineBase = ({
   fromX,
@@ -17,12 +18,13 @@ const CustomConnectionlineBase = ({
     targetY: toY,
     targetPosition: toPosition,
   });
+  const flowState = useFlowStateValse();
 
   return (
     <g>
       <path
         style={{
-          stroke: '#3f3f46',
+          stroke: flowState.isError ? '#dc2626' : '#3f3f46',
           strokeLinecap: 'round',
           strokeLinejoin: 'round',
           strokeWidth: 2,

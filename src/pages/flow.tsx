@@ -1,8 +1,11 @@
 import { ReactFlowProvider } from 'reactflow';
 import { Flow } from '../components/flow/Flow';
+import { FlowStateProvider } from '../contexts/FlowStateContext';
 
 export const FlowPage = () => (
-  <ReactFlowProvider>
-    <Flow />
-  </ReactFlowProvider>
+  <FlowStateProvider>
+    <ReactFlowProvider>
+      <Flow />
+    </ReactFlowProvider>
+  </FlowStateProvider>
 );

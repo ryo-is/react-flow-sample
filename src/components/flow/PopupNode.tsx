@@ -1,6 +1,5 @@
 import { Fragment, memo, useState } from 'react';
 import {
-  Connection,
   Handle,
   Node,
   NodeProps,
@@ -52,11 +51,6 @@ const PopupNodeBase = ({
     );
   };
 
-  const isValidConnection = (connection: Connection) => {
-    console.log(connection);
-    return true;
-  };
-
   return (
     <div className="placeholder:bg-white text-zinc-800 text-xs w-[240px] text-center rounded-sm border border-zinc-700 min-h-[120px] pb-2 bg-sky-50">
       {targetPosition !== Position.Top && (
@@ -65,7 +59,6 @@ const PopupNodeBase = ({
           position={targetPosition}
           isConnectable={isConnectable}
           className="w-3 h-3 left-[-7px] border-2 border-zinc-800"
-          isValidConnection={isValidConnection}
         >
           <div className="bg-zinc-100 w-full h-full rounded-full p-[2px] pointer-events-none">
             <div className="bg-zinc-800 w-full h-full rounded-full" />
