@@ -15,9 +15,10 @@ import { MinusIcon, PlusIcon } from '@heroicons/react/solid';
 
 import { PopupNode, DataType } from './PopupNode';
 import { LinkNode } from './LinkNode';
+import { FlowInfo } from './FlowInfo';
+import { CustomEdge } from './CustomEdge';
 
 import 'reactflow/dist/style.css';
-import { FlowInfo } from './FlowInfo';
 
 const panOnDrag = [1, 2];
 
@@ -80,13 +81,17 @@ const initialEdges: Edge[] = [
     source: 'link-4',
     target: 'popup-3',
     style: { stroke: '#3f3f46', strokeWidth: 2 },
-    type: 'smoothstep',
+    type: 'custom',
   },
 ];
 
 const nodeTypes = {
   popup: PopupNode,
   link: LinkNode,
+};
+
+const edgeTypes = {
+  custom: CustomEdge,
 };
 
 export const Flow = () => {
@@ -105,7 +110,7 @@ export const Flow = () => {
           {
             ...params,
             style: { stroke: '#3f3f46', strokeWidth: 2 },
-            type: 'smoothstep',
+            type: 'custom',
           },
           els
         )
@@ -214,6 +219,7 @@ export const Flow = () => {
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
           onEdgeUpdate={onEdgeUpdate}
           onEdgeUpdateStart={onEdgeUpdateStart}
           onEdgeUpdateEnd={onEdgeUpdateEnd}
