@@ -10,6 +10,7 @@ import ReactFlow, {
   updateEdge,
   useReactFlow,
   MiniMap,
+  EdgeTypes,
 } from 'reactflow';
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid';
 
@@ -17,6 +18,7 @@ import { PopupNode, DataType } from './PopupNode';
 import { LinkNode } from './LinkNode';
 import { FlowInfo } from './FlowInfo';
 import { CustomEdge } from './CustomEdge';
+import { CustomConnectionline } from './CustomConnectionline';
 
 import 'reactflow/dist/style.css';
 
@@ -80,7 +82,6 @@ const initialEdges: Edge[] = [
     id: 'edge-3',
     source: 'link-4',
     target: 'popup-3',
-    style: { stroke: '#3f3f46', strokeWidth: 2 },
     type: 'custom',
   },
 ];
@@ -90,7 +91,7 @@ const nodeTypes = {
   link: LinkNode,
 };
 
-const edgeTypes = {
+const edgeTypes: EdgeTypes = {
   custom: CustomEdge,
 };
 
@@ -109,7 +110,6 @@ export const Flow = () => {
         addEdge(
           {
             ...params,
-            style: { stroke: '#3f3f46', strokeWidth: 2 },
             type: 'custom',
           },
           els
@@ -226,6 +226,7 @@ export const Flow = () => {
           panOnScroll
           selectionOnDrag
           panOnDrag={panOnDrag}
+          connectionLineComponent={CustomConnectionline}
         >
           {/* <Controls /> */}
           <div className="absolute right-0 z-50 flex gap-x-2">

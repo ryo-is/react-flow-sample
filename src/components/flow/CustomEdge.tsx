@@ -1,10 +1,6 @@
 import { memo } from 'react';
 import { EdgeProps, getSmoothStepPath } from 'reactflow';
 
-export type EdgeDataType = {
-  label: string;
-};
-
 const CustomEdgeBase = ({
   id,
   sourceX,
@@ -13,10 +9,8 @@ const CustomEdgeBase = ({
   targetY,
   sourcePosition,
   targetPosition,
-  style = {},
-  data,
   markerEnd,
-}: EdgeProps<EdgeDataType>) => {
+}: EdgeProps) => {
   const [edgePath] = getSmoothStepPath({
     sourceX,
     sourceY,
@@ -27,25 +21,20 @@ const CustomEdgeBase = ({
   });
 
   return (
-    <>
+    <g>
       <path
         id={id}
-        style={style}
+        style={{
+          stroke: '#3f3f46',
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          strokeWidth: 2,
+        }}
         className="react-flow__edge-path"
         d={edgePath}
         markerEnd={markerEnd}
       />
-      <text>
-        <textPath
-          href={`#${id}`}
-          style={{ fontSize: 12 }}
-          startOffset="50%"
-          textAnchor="middle"
-        >
-          {data?.label}
-        </textPath>
-      </text>
-    </>
+    </g>
   );
 };
 
