@@ -18,8 +18,12 @@ const LinkNodeBase = ({
           type="target"
           position={targetPosition}
           isConnectable={isConnectable}
-          className="w-2 h-2 right-[-5px]"
-        />
+          className="w-3 h-3 left-[-7px] border-2 border-zinc-800"
+        >
+          <div className="bg-zinc-100 w-full h-full rounded-full p-[2px] pointer-events-none">
+            <div className="bg-zinc-800 w-full h-full rounded-full" />
+          </div>
+        </Handle>
       )}
 
       <div className="flex justify-between items-center">
@@ -68,8 +72,12 @@ const LinkNodeBase = ({
           type="source"
           position={sourcePosition}
           isConnectable={isConnectable}
-          className="w-2 h-2 right-[-5px]"
-        />
+          className="w-3 h-3 right-[-7px] border-2 border-zinc-800"
+        >
+          <div className="bg-zinc-100 w-full h-full rounded-full p-[2px] pointer-events-none">
+            <div className="bg-zinc-800 w-full h-full rounded-full" />
+          </div>
+        </Handle>
       )}
     </div>
   );
