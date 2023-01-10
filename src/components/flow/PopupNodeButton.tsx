@@ -20,19 +20,19 @@ const PopupNodeButtonBase = ({
         {button.type === 'link' ? '●' : '×'}
       </div>
       <div className="flex-1 text-left pl-1">{button.label}</div>
-      <div className="relative">
+      <div className="relative flex">
         <button type="button" onClick={() => setIsMenuOpen((p) => !p)}>
           <DotsVerticalIcon className="w-3 h-3 text-zinc-600" />
         </button>
         {isMenuOpen && (
-          <div className="absolute w-[120px] bg-zinc-100 shadow-lg z-50 text-zinc-800 border-zinc-300 border">
+          <div className="absolute top-3 w-[120px] bg-zinc-100 shadow-lg z-50 text-zinc-800 border-zinc-300 border">
             <button
               className="p-2 w-full text-left hover:bg-sky-100 flex"
               type="button"
               onClick={() => setIsMenuOpen(false)}
             >
               <PencilIcon className="w-4 h-4 mr-2" />
-              編集
+              Edit
             </button>
             <button
               className="p-2 w-full text-left hover:bg-sky-100 flex text-red-500"
@@ -40,7 +40,7 @@ const PopupNodeButtonBase = ({
               onClick={() => setIsMenuOpen(false)}
             >
               <TrashIcon className="w-4 h-4 mr-2" />
-              削除
+              Delete
             </button>
           </div>
         )}

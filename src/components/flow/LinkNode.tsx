@@ -54,7 +54,7 @@ const LinkNodeBase = ({
 
       <div className="flex justify-between items-center">
         <div className=" bg-zinc-700 text-white px-2 py-1 file:rounded-sm">
-          画面遷移
+          LINK
         </div>
         <div className="relative">
           <button type="button" onClick={() => setIsMenuOpen((p) => !p)}>
@@ -68,7 +68,7 @@ const LinkNodeBase = ({
                 onClick={() => setIsMenuOpen(false)}
               >
                 <PencilIcon className="w-4 h-4 mr-2" />
-                編集
+                Edit
               </button>
               <button
                 className="p-2 w-full text-left hover:bg-sky-100 flex"
@@ -76,7 +76,7 @@ const LinkNodeBase = ({
                 onClick={() => setIsMenuOpen(false)}
               >
                 <DuplicateIcon className="w-4 h-4 mr-2" />
-                コピー
+                Copy
               </button>
               <button
                 className="p-2 w-full text-left hover:bg-sky-100 flex text-red-500"
@@ -84,7 +84,7 @@ const LinkNodeBase = ({
                 onClick={() => setIsMenuOpen(false)}
               >
                 <TrashIcon className="w-4 h-4 mr-2" />
-                削除
+                Delete
               </button>
             </div>
           )}
