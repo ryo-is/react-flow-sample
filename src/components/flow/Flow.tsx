@@ -11,6 +11,7 @@ import ReactFlow, {
   useReactFlow,
   MiniMap,
   EdgeTypes,
+  MarkerType,
 } from 'reactflow';
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid';
 
@@ -90,12 +91,18 @@ const initialEdges: Edge[] = [
     sourceHandle: 'popup-1-button-2',
     style: { stroke: '#3f3f46', strokeWidth: 2 },
     type: 'smoothstep',
+    markerEnd: { type: MarkerType.Arrow, color: '#3f3f46', strokeWidth: 2 },
   },
   {
     id: 'edge-3',
     source: 'link-4',
     target: 'popup-3',
     type: 'custom',
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      color: '#3f3f46',
+      strokeWidth: 2,
+    },
   },
 ];
 
